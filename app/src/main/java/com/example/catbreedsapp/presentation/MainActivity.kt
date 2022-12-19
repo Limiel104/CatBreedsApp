@@ -6,38 +6,56 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.catbreedsapp.presentation.cat_details.composables.CatDetailsScreen
+import com.example.catbreedsapp.presentation.cat_list.composables.CatListScreen
 import com.example.catbreedsapp.presentation.ui.theme.CatBreedsAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CatBreedsAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.CayListScreen.route
+                    ){
+                        composable(
+                            route = Screen.CayListScreen.route
+                        ){
+                            CatListScreen(navController)
+                        }
+                        composable(
+                            route = Screen.CayDetailsScreen.route + "/{catId}"
+                        ){
+                            CatDetailsScreen()
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CatBreedsAppTheme {
-        Greeting("Android")
-    }
-}
+//@Composable
+//fun Greeting(name: String) {
+//    Text(text = "Hello $name!")
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    CatBreedsAppTheme {
+//        Greeting("Android")
+//    }
+//}

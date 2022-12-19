@@ -1,5 +1,6 @@
 package com.example.catbreedsapp.presentation.cat_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,9 +23,18 @@ class CatListViewModel @Inject constructor(private val getCatsUseCase: GetCatsUs
         getCats()
     }
 
+//    private fun getCats(){
+//        getCatsUseCase().map {
+//            _state.value = CatListState(cats = it)
+//        }.launchIn(viewModelScope)
+//    }
+
     private fun getCats(){
-        getCatsUseCase().map {
+        getCatsUseCase().onEach {
             _state.value = CatListState(cats = it)
+            Log.i("TAG",it.toString())
         }.launchIn(viewModelScope)
     }
+
+
 }
